@@ -1,0 +1,101 @@
+databaseChangeLog:
+      - changeSet:
+              id: 1
+              author: root
+              changes:
+              - createTable:
+                      tableName: role
+                      columns:
+                      - column:
+                              name: id
+                              type: int
+                              autoIncrement: true
+                              constraints:
+                                    primaryKey: true
+                                    nullable: false
+                      - column:
+                              name: name
+                              type: varchar(256)
+                              constraints:
+                                    nullable: false
+                      - column:
+                              name: description
+                              type: varchar(1024)
+                              constraints:
+                                    nullable: true
+                      - column:
+                              name: action
+                              type: varchar(11)
+                              constraints:
+                                    nullable: true
+      - changeSet:
+              id: 2
+              author: root
+              changes:
+              - createTable:
+                      tableName: section
+                      columns:
+                      - column:
+                              name: id
+                              type: int
+                              autoIncrement: true
+                              constraints:
+                                    primaryKey: true
+                                    nullable: false
+                      - column:
+                              name: sectionid
+                              type: int
+                              constraints:
+                                    nullable: false
+                      - column:
+                              name: roleid
+                              type: int
+                              constraints:
+                                    nullable: false
+                      - column:
+                              name: action
+                              type: varchar(11)
+                              constraints:
+                                    nullable: true
+      - changeSet:
+              id: 3
+              author: root
+              changes:
+              - createTable:
+                      tableName: user
+                      columns:
+                      - column:
+                              name: id
+                              type: int
+                              autoIncrement: true
+                              constraints:
+                                    primaryKey: true
+                                    nullable: false
+                      - column:
+                              name: userid
+                              type: int
+                              constraints:
+                                    nullable: false
+                      - column:
+                              name: roleid
+                              type: int
+                              constraints:
+                                    nullable: false
+                      - column:
+                              name: action
+                              type: varchar(11)
+                              constraints:
+                                    nullable: true
+      - changeSet:
+              id: 4
+              author: root
+              changes:
+              - insert:
+                      tableName: role
+                      columns:
+                      - column:
+                              name: name
+                              value: New role 1
+                      - column:
+                              name: description
+                              value: Welcome!

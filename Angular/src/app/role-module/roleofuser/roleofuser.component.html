@@ -1,0 +1,191 @@
+<mat-toolbar color="default">
+  <mat-card-title style="text-align: center">{{ description }}</mat-card-title>
+  <span class="spacer"></span>
+  <button mat-icon-button (click)="refresh()">
+    <mat-icon>refresh</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div fxLayout="row" fxLayoutGap="16px">
+  <a mat-raised-button routerLink="">Role</a>
+  <a mat-raised-button routerLink="/userofrole">Edit users of a role</a>
+  <a mat-raised-button routerLink="/roleofuser">Edit roles of a user</a>
+</div>
+
+<mat-card class="card-demo">
+
+  <mat-card-content style="padding: 10px">
+    <div class="containerX" style="border: 1px solid gray">
+      <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxFlex class="coloredContainerX box">
+        <div fxFlex = "60" style="border: 1px solid gray;padding: 5px">
+
+          <div class="container" fxLayoutAlign="center" [style.display]="id != -2 ? '' : 'none'">
+            <!--Input box-->
+            <form class="role-form"  (ngSubmit)="onSumbit()" #formControl="ngForm">
+              <div fxLayout="column" style="border: 1px solid gray;padding: 10px;margin: 7px;">
+                <div class="container mat-elevation-z8">
+                  <div class="form">
+                    <mat-form-field floatPlaceholder="never" color="accent">
+                      <input matInput #a_r_filter placeholder="Role Search">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <mat-table #a_r_sort="matSort" [dataSource]="addedRolesDataSource" matSort class="mat-cell">
+
+                  <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header style="flex: 0 0 40%"></mat-header-cell>
+                    <mat-cell *matCellDef="let row" style="flex: 0 0 40%">{{row.name}}</mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="critical">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header style="flex: 0 0 40%"></mat-header-cell>
+                    <mat-cell *matCellDef="let row" style="flex: 0 0 40%">
+                      <button mat-icon-button [style.display]="row.action != 1 ? 'none' : ''">
+                        <mat-icon title="Critical Section">warning</mat-icon>
+                      </button></mat-cell>
+                  </ng-container>
+
+                  <!-- actions -->
+                  <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef>
+                    </mat-header-cell>
+
+                    <mat-cell *matCellDef="let row; let i=index;">
+                      <button mat-icon-button (click)="removeRoles(i, row)" title="Remove">
+                        <mat-icon aria-label="remove_circle_outline">remove_circle_outline</mat-icon>
+                      </button>
+                    </mat-cell>
+                  </ng-container>
+
+                  <mat-header-row *matHeaderRowDef="displayedCriticalColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedCriticalColumns;"></mat-row>
+                </mat-table>
+
+                <div class="no-results" [style.display]="addedRolesDataSource.renderedData.length == 0 ? '' : 'none'">
+                  No added Roles
+                </div>
+
+                <mat-paginator #a_r_paginator
+                               [length]="addedRolesDataSource.filteredData.length"
+                               [pageIndex]="0"
+                               [pageSize]="5"
+                               [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
+
+              </div>
+              <div fxLayout="column" fxLayoutAlign="center">
+                <button mat-raised-button color="default" style="margin: 5px 30px;border: 1px solid gray;border-radius: 1px" [type]="submit" [disabled]="!formControl.valid" >Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div fxFlex = "60">
+          <div class="container" fxLayoutGap.md="0" style="border: 1px solid gray;padding: 10px">
+
+            <div class="form">
+              <mat-form-field floatPlaceholder="never" color="accent">
+                <input matInput #a_u_filter placeholder="User Search">
+              </mat-form-field>
+            </div>
+
+            <mat-table #a_u_sort="matSort" [dataSource]="usersDataSource" matSort class="mat-cell">
+
+              <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header style="flex: 0 0 80%"></mat-header-cell>
+                <mat-cell *matCellDef="let row" style="flex: 0 0 80%">{{ row.name }}</mat-cell>
+              </ng-container>
+
+              <!-- actions -->
+              <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef>
+                </mat-header-cell>
+
+                <mat-cell *matCellDef="let row; let i=index;">
+                  <button mat-icon-button (click)="startEdit(i, row.id, row.name, row.description)">
+                    <mat-icon aria-label="Edit">edit</mat-icon>
+                  </button>
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+
+            <div class="no-results" [style.display]="usersDataSource.renderedData.length == 0 ? '' : 'none'">
+              No results
+            </div>
+
+            <mat-paginator #a_u_paginator
+                           [length]="usersDataSource.filteredData.length"
+                           [pageIndex]="0"
+                           [pageSize]="5"
+                           [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+          </div>
+          <div fxLayout="column" style="border: 1px solid gray;padding: 10px;margin: 7px;" [style.display]="id != -2 ? '' : 'none'">
+            <div class="container mat-elevation-z8">
+              <div class="form">
+                <mat-form-field floatPlaceholder="never" color="accent">
+                  <input matInput #n_r_filter placeholder="Role Search">
+                </mat-form-field>
+              </div>
+            </div>
+
+            <mat-table #n_r_sort="matSort" [dataSource]="newRolesDataSource" matSort class="mat-cell">
+
+              <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header style="flex: 0 0 40%;"></mat-header-cell>
+                <mat-cell *matCellDef="let row" style="flex: 0 0 40%;">{{row.name}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="critical">
+                <mat-header-cell *matHeaderCellDef mat-sort-header style="flex: 0 0 40%;"></mat-header-cell>
+                <mat-cell *matCellDef="let row" style="flex: 0 0 40%;">
+                  <button mat-icon-button [style.display]="row.action != 1 ? 'none' : ''">
+                    <mat-icon title="Critical Section">warning</mat-icon>
+                  </button></mat-cell>
+              </ng-container>
+
+              <!-- actions -->
+              <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef>
+                </mat-header-cell>
+
+                <mat-cell *matCellDef="let row; let i=index2;">
+                  <button mat-icon-button (click)="addRoles(i, row)" title="Add">
+                    <mat-icon aria-label="add_circle_outline">add_circle_outline</mat-icon>
+                  </button>
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedCriticalColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedCriticalColumns;"></mat-row>
+            </mat-table>
+
+            <div class="no-results" [style.display]="newRolesDataSource.renderedData.length == 0 ? '' : 'none'">
+              No roles
+            </div>
+
+            <mat-paginator #n_r_paginator
+                           [length]="newRolesDataSource.filteredData.length"
+                           [pageIndex]="0"
+                           [pageSize]="5"
+                           [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-footer style="width:95%">
+  </mat-card-footer>
+</mat-card>
+
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Please wait...</p>
+</ngx-spinner>
