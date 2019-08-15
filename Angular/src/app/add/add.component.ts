@@ -6,7 +6,7 @@ import {BehaviorSubject, fromEvent, merge, Observable} from 'rxjs';
 import { map} from 'rxjs/operators';
 import {FormControl, Validators, FormGroup, FormBuilder} from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import * as moment from 'moment';
 import {NgxSpinnerService} from 'ngx-spinner';
 import { Key } from '../models/key.model';
 
@@ -33,8 +33,14 @@ export class AddComponent implements OnInit, AfterViewInit {
   isDelete = false;
   
   KeyArray = [{id: 1, name: 'key 1', building: 'sanhaojie', room: '7-1',door: 3, isSpecial: true, 
-                      approver_array: [{item_id: 3, item_text: 'Pune', item_images: "assets/images/users/d1.jpg"}, {item_id: 4, item_text: "Navsari", item_images: "assets/images/users/d2.jpg"}],upload_type: ['pdf']},
-              {id: 2, name: "ker 2", building: "bu 2", room: "r 3", door: "dw", isSpecial: true, approver_array: [{item_id: 4, item_text: "Navsari", item_images: "assets/images/users/d2.jpg"}], upload_type: ['doc']}];
+                      approver_array: [{item_id: 3, item_text: 'Pune', item_images: "assets/images/users/d1.jpg"}, 
+                                      {item_id: 4, item_text: "Navsari", item_images: "assets/images/users/d2.jpg"}],
+                      upload_type: ['pdf'], 
+                      createdDate: '2019-08-15 20:28:52'},
+              {id: 2, name: "ker 2", building: "bu 2", room: "r 3", door: "dw", isSpecial: true, 
+                      approver_array: [{item_id: 4, item_text: "Navsari", item_images: "assets/images/users/d2.jpg"}], 
+                      upload_type: ['doc'], 
+                      createdDate: '2019-08-14 19:18:32'}];
 
   dropdownApproverList = [];
   selectedApproverItems = [];
@@ -167,8 +173,11 @@ export class AddComponent implements OnInit, AfterViewInit {
       this.isAdd = false;
       this.isEdit = false;
       this.isDelete = false;
+
+      let now = moment().format("YYYY-MM-DD HH:mm:ss");
+
       let new_key = {id: this.KeyArray.length + 1, name: this.keyForm.value.key_name, building: this.keyForm.value.key_building, room: this.keyForm.value.key_room,
-                      door: this.keyForm.value.key_door, isSpecial: this.keyForm.value.special_key, approver_array: this.selectedApproverItems, upload_type: this.selectedDocTypeItems};
+                      door: this.keyForm.value.key_door, isSpecial: this.keyForm.value.special_key, approver_array: this.selectedApproverItems, upload_type: this.selectedDocTypeItems, createdDate: now};
       this.KeyArray.push(new_key);
 
       this.dataSource.data = this.KeyArray as unknown as Key[];

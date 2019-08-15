@@ -7,5 +7,6 @@ export interface Key
     door: string,
     isSpecial: boolean,
     approver_array: Array<any>,
-    upload_type: Array<any>
+    upload_type: Array<any>,
+    createdDate: string
 }
