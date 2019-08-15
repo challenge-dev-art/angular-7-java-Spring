@@ -300,10 +300,19 @@ export class AddComponent implements OnInit, AfterViewInit {
     this.keyForm.controls['approver_array'].setValue(this.selectedApproverItems);
     this.keyForm.controls['upload_type'].setValue(this.selectedDocTypeItems);
 
+    let dId = value.id;
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'sm'})
         .result.then((result) => {
-          
-
+          let index = this.getIndexUpdatedItem(dId);
+          if(index >= 0)
+          {
+            this.KeyArray.splice(index, 1);
+            this.dataSource.data = this.KeyArray as Key[];
+            this.isAdd = false;
+            this.isEdit = false;
+            this.isDelete = false;
+            this.keyFormInitial();
+          }
         }, (reason) => {});
   }
 }
