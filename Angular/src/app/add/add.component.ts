@@ -5,6 +5,7 @@ import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject, fromEvent, merge, Observable} from 'rxjs';
 import { map} from 'rxjs/operators';
 import {FormControl, Validators, FormGroup, FormBuilder} from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import {NgxSpinnerService} from 'ngx-spinner';
 import { Key } from '../models/key.model';
@@ -29,6 +30,7 @@ export class AddComponent implements OnInit, AfterViewInit {
   isAdd = false;
   isEdit = false;
   isSubmit = false;
+  isDelete = false;
   
   KeyArray = [{id: 1, name: 'key 1', building: 'sanhaojie', room: '7-1',door: 3, isSpecial: true, 
                       approver_array: [{item_id: 3, item_text: 'Pune', item_images: "assets/images/users/d1.jpg"}, {item_id: 4, item_text: "Navsari", item_images: "assets/images/users/d2.jpg"}],upload_type: ['pdf']},
@@ -49,8 +51,13 @@ export class AddComponent implements OnInit, AfterViewInit {
   selectedKeyId: any;
   isNeededWhenUpdate = false;
 
+  modal_title = '';
+  modal_content = '';
+  modal_success_btn = '';
+  modal_cancel_btn = '';
+
   constructor(private fb: FormBuilder, public httpClient: HttpClient,
-    public dialog: MatDialog) {
+    public dialog: MatDialog, private modalService: NgbModal) {
       
     }
 
@@ -112,6 +119,8 @@ export class AddComponent implements OnInit, AfterViewInit {
 
   // Angular Material Datatable
   public doFilter = (value: string) => {
+    if(value.length < 3 && value.length != 0)
+      return;
     this.dataSource.filter = value.trim().toLocaleLowerCase();
   }
 
@@ -145,6 +154,9 @@ export class AddComponent implements OnInit, AfterViewInit {
   {
     this.isAdd = true;
     this.isEdit = false;
+    this.isDelete = false;
+    this.selectedApproverItems = [];
+    this.selectedDocTypeItems = [];
   }
 
   addkey()
@@ -154,6 +166,7 @@ export class AddComponent implements OnInit, AfterViewInit {
     {
       this.isAdd = false;
       this.isEdit = false;
+      this.isDelete = false;
       let new_key = {id: this.KeyArray.length + 1, name: this.keyForm.value.key_name, building: this.keyForm.value.key_building, room: this.keyForm.value.key_room,
                       door: this.keyForm.value.key_door, isSpecial: this.keyForm.value.special_key, approver_array: this.selectedApproverItems, upload_type: this.selectedDocTypeItems};
       this.KeyArray.push(new_key);
@@ -189,6 +202,7 @@ export class AddComponent implements OnInit, AfterViewInit {
       {
         this.isAdd = false;
         this.isEdit = false;
+        this.isDelete = false;
         if(index >= 0)
         {
           this.KeyArray[index].name = this.keyForm.value.key_name;
@@ -219,6 +233,7 @@ export class AddComponent implements OnInit, AfterViewInit {
   {
     this.isAdd = false;
     this.isEdit = false;
+    this.isDelete = false;
     this.keyFormInitial();
   }
 
@@ -226,6 +241,7 @@ export class AddComponent implements OnInit, AfterViewInit {
   {
     this.isEdit = true;
     this.isAdd = false;
+    this.isDelete = false;
     this.selectedKeyId = value.id;
     this.keyForm.controls['key_name'].setValue(value.name);
     this.keyForm.controls['key_building'].setValue(value.building);
@@ -242,6 +258,7 @@ export class AddComponent implements OnInit, AfterViewInit {
   keyFormInitial()
   {
     this.isSubmit = false;
+    this.isDelete = false;
     this.isNeededWhenUpdate = false;
     this.keyForm.controls.key_name.setValue('');
     this.keyForm.controls.key_building.setValue('');
@@ -252,5 +269,32 @@ export class AddComponent implements OnInit, AfterViewInit {
     this.selectedDocTypeItems = [];
     this.keyForm.controls.approver_array.setValue(this.selectedApproverItems);
     this.keyForm.controls.upload_type.setValue(this.selectedDocTypeItems);
+  }
+
+  openDeleteModal(value, content)
+  {
+    this.modal_title = '';
+    this.modal_content = 'Are you sure you want to delete key: ' + value.name;
+    this.modal_success_btn = 'Yes';
+    this.modal_cancel_btn = 'No';
+
+    this.isDelete = true;
+    this.selectedKeyId = value.id;
+    this.keyForm.controls['key_name'].setValue(value.name);
+    this.keyForm.controls['key_building'].setValue(value.building);
+    this.keyForm.controls['key_room'].setValue(value.room);
+    this.keyForm.controls['key_door'].setValue(value.door);
+    this.keyForm.controls['special_key'].setValue(value.isSpecial);
+    this.isChecked = value.isSpecial;
+    this.selectedApproverItems = value.approver_array;
+    this.selectedDocTypeItems = value.upload_type;
+    this.keyForm.controls['approver_array'].setValue(this.selectedApproverItems);
+    this.keyForm.controls['upload_type'].setValue(this.selectedDocTypeItems);
+
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'sm'})
+        .result.then((result) => {
+          
+
+        }, (reason) => {});
   }
 }
