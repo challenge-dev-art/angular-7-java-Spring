@@ -1,26 +1,32 @@
 <div fxLayout="row wrap" fxFlexAlign="center" class="row">
   <div fxFlex.gt-sm="50" fxFlex="100" class="p-10">
     <mat-card style="height: 95vh">
-        <mat-card-content>
-          <button mat-stroked-button color="primary">Add new Key</button>
+        <mat-card-content *ngIf="!isAdd && !isEdit">
+          <button mat-stroked-button color="primary" (click)="goAddKey()">Add new Key</button>
         </mat-card-content>
-        <mat-card-content>
-          <form [formGroup]="keyForm">
-            <div fxLayout="row wrap" fxFlexAlign="center" style="padding: 20px">
+        <mat-card-content *ngIf="isAdd || isEdit">
+          <button mat-mini-fab color="disabled" (click)="goback()">
+            <mat-icon aria-label="Return back">arrow_back</mat-icon>
+          </button>
+        </mat-card-content>
+        <mat-card-content *ngIf="isAdd || isEdit">
+          <form [formGroup]="keyForm" style="padding: 20px">
+            <div fxLayout="row wrap" fxFlexAlign="center">
               <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="p-10">
                 <mat-form-field appearance="outline">
                   <mat-label>Key Name</mat-label>
-                  <input matInput formControlName="key_name"  placeholder="Key Name">
-                  <mat-error *ngIf="f.key_name.errors && f.key_name.errors.required && f.key_name.touched">
+                  <input matInput formControlName="key_name"  placeholder="Key Name" (keypress)="keypressKeyName()">
+                  <mat-error *ngIf="f.key_name.errors && f.key_name.errors.required && isSubmit">
                       Key name is required.
                   </mat-error>
+                  <label class="feedback-error" *ngIf="isNeededWhenUpdate">Please enter new key name to update your key info.</label>
                 </mat-form-field>
               </div>
               <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="p-10">
                 <mat-form-field appearance="outline">
                   <mat-label>Key Building</mat-label>
                   <input matInput formControlName="key_building"  placeholder="Key Building">
-                  <mat-error *ngIf="f.key_building.errors && f.key_building.errors.required && f.key_building.touched">
+                  <mat-error *ngIf="f.key_building.errors && f.key_building.errors.required && isSubmit">
                       Key building is required.
                   </mat-error>
                 </mat-form-field>
@@ -29,7 +35,7 @@
                 <mat-form-field appearance="outline">
                   <mat-label>Key Room</mat-label>
                   <input matInput formControlName="key_room"  placeholder="Key Room">
-                  <mat-error *ngIf="f.key_room.errors && f.key_room.errors.required && f.key_room.touched">
+                  <mat-error *ngIf="f.key_room.errors && f.key_room.errors.required && isSubmit">
                       Key room is required.
                   </mat-error>
                 </mat-form-field>
@@ -38,14 +44,45 @@
                 <mat-form-field appearance="outline">
                   <mat-label>Key Door</mat-label>
                   <input matInput formControlName="key_door"  placeholder="Key Door">
-                  <mat-error *ngIf="f.key_door.errors && f.key_door.errors.required && f.key_door.touched">
+                  <mat-error *ngIf="f.key_door.errors && f.key_door.errors.required && isSubmit">
                       Key door is required.
                   </mat-error>
                 </mat-form-field>
               </div>
               <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="p-10">
                 <p>Special number</p>
-                <mat-checkbox color="accent" formControlName="special_key" [checked] = "special_key" labelPosition="before" class="m-r-10">Special key</mat-checkbox>
+                <mat-checkbox color="accent" formControlName="special_key" [checked]="special_key" labelPosition="before" (change)="checkSpecialKey($event)" class="m-r-10">Special key</mat-checkbox>
+              </div>
+              <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="p-10" style="padding: 10px" [hidden]="!isChecked">
+                  <ng-multiselect-dropdown class="custom-font-size" 
+                      name="approver_array"
+                      [placeholder]="'Select Approver'"
+                      [data]="dropdownApproverList"
+                      formControlName="approver_array"
+                      [disabled]="disabled"
+                      [settings]="dropdownApproverSettings"
+                      (onSelect)="onItemSelect($event)">
+                  </ng-multiselect-dropdown>
+
+                  <ng-multiselect-dropdown
+                      name="upload_type"
+                      [data]="dropdownDocTypeList"
+                      formControlName="upload_type"
+                      [settings]="dropdownDocTypeSettings"
+                      (onSelect)="onItemSelect($event)"
+                      [disabled]="disabled">
+                  </ng-multiselect-dropdown>
+              </div>
+              <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="p-10" style="padding: 10px">
+                  <div fxFlex.gt-sm="72" fxFlex="0" class="p-10"></div>
+                  <div fxFlex.gt-sm="12.5" fxFlex="100" class="p-10" *ngIf="isAdd">
+                    <button mat-raised-button color="primary" style="float: right;width: 100%" (click)="addkey()">Save as New</button>
+                  </div>
+                  <div fxFlex.gt-sm="3" fxFlex="0" class="p-10"></div>
+                  <div fxFlex.gt-sm="12.5" fxFlex="100" class="p-10" *ngIf="isEdit">
+                      <button mat-raised-button color="primary" style="width: 100%" (click)="updateKey()">Save changes</button>
+                  </div>
+                  <div style="clear: both"></div>
               </div>
             </div>
           </form>
@@ -73,11 +110,12 @@
             
                   <ng-container matColumnDef="state">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
-                      <td mat-cell *matCellDef="let row" [ngStyle]="row.colorRow" style="overflow-x: hidden"> 
+                      <td mat-cell *matCellDef="let row" style="overflow-x: hidden"> 
                         <div class="action-button-row m-r-10">
                           <button mat-raised-button>Copy</button>
                           <button mat-raised-button color="accent">Delete</button>
-                          <button mat-raised-button color="primary">Edit</button>
+                          <button mat-raised-button color="primary" (click)="editKey(row)">Edit</button>
+                          <!-- <p style="float: right;z-index: 999;">Are you sure you want to delete? <button mat-raised-button color="accent">Yes</button></p> -->
                         </div>
                         <div style="clear: both"></div>
                       </td>

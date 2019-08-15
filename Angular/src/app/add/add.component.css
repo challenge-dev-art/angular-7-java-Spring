@@ -48,6 +48,7 @@
 
 .feedback-error {
     color: red;
+    font-size: 12px;
 }
 
 .mat-form-field
@@ -58,4 +59,10 @@
 .keyForm {
     display: flex;
     flex-wrap: wrap;
+}
+
+::ng-deep .multiselect-dropdown .dropdown-btn {
+    width: 98% !important;
+    padding: 13px !important;
+    margin-top: 10px !important;
 }

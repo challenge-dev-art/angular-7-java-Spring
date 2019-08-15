@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AddComponent } from './add/add.component';
 import { CookieService } from 'ngx-cookie-service';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     FlexLayoutModule,
     ReactiveFormsModule,
     NgxSpinnerModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   entryComponents: [
 
