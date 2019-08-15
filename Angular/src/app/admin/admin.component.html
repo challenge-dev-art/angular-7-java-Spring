@@ -28,7 +28,7 @@
                                 </mat-expansion-panel-header>
 
                                 <div fxLayout="row wrap" fxFlexAlign="center" class="row">
-                                  <div fxFlex.gt-sm="50" fxFlex="100" class="p-10">
+                                  <div fxFlex.gt-sm="50" fxFlex="100">
                                       <div fxLayout="row wrap" fxFlexAlign="center" class="row" style="padding: 0 40px">
                                         <div fxFlex.gt-sm="33.33" fxFlex="100"><span class="span-key">room: </span> {{row.room}}</div>
                                         <div fxFlex.gt-sm="33.33" fxFlex="100"><span class="span-key">door name: </span> {{row.door}}</div>
@@ -37,6 +37,84 @@
                                     </div>
                                   <div fxFlex.gt-sm="50" fxFlex="0" class="p-10"></div>
                                 </div>
+                                
+                                <div fxLayout="row wrap" fxFlexAlign="center" class="row">
+                                  <div fxFlex.gt-sm="50" fxFlex="100" style="padding:0 10px">
+                                    <div fxLayout="row wrap" fxFlexAlign="center" class="row" *ngIf="row.isSpecial">
+                                      <div fxFlex.gt-sm="50" fxFlex="100">
+                                        <mat-form-field fxFlex="100%" appearance="outline" style="margin: 0 10px">
+                                          <mat-label>Search</mat-label>
+                                            <input matInput (keyup)="filterRow($event.target.value, row)" placeholder="Search">
+                                          <mat-icon matSuffix style="font-size: 1.2em">search</mat-icon>
+                                        </mat-form-field>
+                                      </div>
+                                      <div fxFlex.gt-sm="50" fxFlex="0"></div>
+                                      <div fxFlex.gt-sm="100" fxFlex="100">
+                                        <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="0" [footerHeight]="'auto'" [rowHeight]="'auto'" [limit]="10"
+                                          [rows]="row.approver_array" style="margin: 10px">
+                                          <ngx-datatable-column prop="content">
+                                            <ng-template let-column="column" ngx-datatable-header-template></ng-template>
+                                            <ng-template let-row="row" ngx-datatable-cell-template style="border: 1px solid gray">
+                                              <div fxLayout="row wrap" fxFlexAlign="center" class="row">
+                                                <div fxFlex.gt-sm="33.33" fxFlex="100">{{row.item_text}}</div>
+                                                <div fxFlex.gt-sm="33.33" fxFlex="100">{{row.approver}}</div>
+                                                <div fxFlex.gt-sm="33.33" fxFlex="100">{{row.date}}</div>
+                                              </div>
+                                            </ng-template>
+                                          </ngx-datatable-column>
+                                          <ngx-datatable-column prop="content">
+                                            <ng-template let-column="column" ngx-datatable-header-template></ng-template>
+                                            <ng-template let-row="row" ngx-datatable-cell-template style="border: 1px solid gray">
+                                              <p style="text-align: center">{{row.approver}}</p>
+                                            </ng-template>
+                                          </ngx-datatable-column>
+                                        </ngx-datatable>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div fxFlex.gt-sm="50" fxFlex="100" class="p-10" style="padding:0 10px">
+                                      <div fxLayout="row wrap" fxFlexAlign="center" class="row">
+                                          <div fxFlex.gt-sm="50" fxFlex="100">
+                                            <mat-form-field fxFlex="100%" appearance="outline" style="margin: 0 10px">
+                                              <mat-label>Search</mat-label>
+                                                <input matInput (keyup)="filterRow($event.target.value, row)" placeholder="Search">
+                                              <mat-icon matSuffix style="font-size: 1.2em">search</mat-icon>
+                                            </mat-form-field>
+                                          </div>
+                                          <div fxFlex.gt-sm="50" fxFlex="0"></div>
+                                          <div fxFlex.gt-sm="100" fxFlex="100">
+                                            <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="'auto'" [footerHeight]="'auto'" [rowHeight]="'auto'" [limit]="10"
+                                              [rows]="row.approver_array" style="margin: 10px">
+                                              <ngx-datatable-column prop="content">
+                                                <ng-template let-column="column" ngx-datatable-header-template>User name</ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template style="border: 1px solid gray">
+                                                  <p>{{row.item_text}}</p>
+                                                </ng-template>
+                                              </ngx-datatable-column>
+                                              <ngx-datatable-column prop="content">
+                                                <ng-template let-column="column" ngx-datatable-header-template>Date</ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template style="border: 1px solid gray">
+                                                  <p>{{row.date}}</p>
+                                                </ng-template>
+                                              </ngx-datatable-column>
+                                              <ngx-datatable-column prop="content">
+                                                <ng-template let-column="column" ngx-datatable-header-template>Guard name</ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template style="border: 1px solid gray">
+                                                  <p>{{row.approver}}</p>
+                                                </ng-template>
+                                              </ngx-datatable-column>
+                                              <ngx-datatable-column prop="content">
+                                                  <ng-template let-column="column" ngx-datatable-header-template>Date</ng-template>
+                                                  <ng-template let-row="row" ngx-datatable-cell-template style="border: 1px solid gray">
+                                                    <p>{{row.date}}</p>
+                                                  </ng-template>
+                                              </ngx-datatable-column>
+                                            </ngx-datatable>
+                                          </div>
+                                        </div>
+                                  </div>
+                                </div>
+
                                 <!-- <mat-action-row>
                                   <button mat-button color="primary" (click)="setStep(0)">return</button>
                                 </mat-action-row> -->

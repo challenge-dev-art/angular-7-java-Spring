@@ -10,15 +10,14 @@ import * as moment from 'moment';
 import {NgxSpinnerService} from 'ngx-spinner';
 import { Key } from '../models/key.model';
 
-
 @Component({
-  selector: 'app-add',
-  templateUrl: './add.component.html',
-  styleUrls: ['./add.component.css']
+  selector: 'app-user-basic',
+  templateUrl: './user-basic.component.html',
+  styleUrls: ['./user-basic.component.css']
 })
-export class AddComponent implements OnInit, AfterViewInit {
+export class UserBasicComponent implements OnInit, AfterViewInit {
 
-  /* Admin: 10, Basic User: 0, Approve User: 1, Reception User: 2 */ 
+/* Admin: 10, Basic User: 0, Approve User: 1, Reception User: 2 */ 
   
   public dataSource = new MatTableDataSource<Key>();
   public displayedColumns = ['name', 'state'];
@@ -49,27 +48,38 @@ export class AddComponent implements OnInit, AfterViewInit {
               {id: 3, name: "key 3", building: "building 2", room: "room 3", door: "dw", isSpecial: false, 
                       approver_array: [{item_id: 4, item_text: "Navsari", item_images: "assets/images/users/d2.jpg", approver: 'Adam', date: '2019-08-14 19:18:32'}], 
                       upload_type: ['doc'], 
-                      createdDate: '2019-08-14 19:18:32', approver: 'Yilong'}];
+                      createdDate: '2019-08-14 19:18:32', approver: 'Yilong'},
+              {id: 4, name: 'Special key', building: 'sanhaojie', room: '7-1',door: 3, isSpecial: true, 
+                      approver_array: [{item_id: 3, item_text: 'Pune', item_images: "assets/images/users/d1.jpg", approver: 'Lehel', date: '2019-08-14 19:18:32'}, 
+                                      {item_id: 4, item_text: "Navsari", item_images: "assets/images/users/d2.jpg", approver: 'Lehel', date: '2019-08-14 19:18:32'}],
+                      upload_type: ['jpg'], 
+                      createdDate: '2019-08-15 20:28:52', approver: 'Yilong'},];
 
   dropdownApproverList = [];
   selectedApproverItems = [];
   dropdownApproverSettings = {};
 
-  dropdownDocTypeList = [];
   selectedDocTypeItems = [];
-  dropdownDocTypeSettings = {};
+  selectedKeyItems = [];
+  dropdownSettings = {};
 
   disabled = false;
   ShowFilter = false;
   limitSelection = false;
   isChecked = false;
-  selectedKeyId: any;
+  selectedKeyId = -1;
   isNeededWhenUpdate = false;
 
   modal_title = '';
   modal_content = '';
   modal_success_btn = '';
   modal_cancel_btn = '';
+
+  // Add
+  buildingModel = -1;
+  keyModel = -1;
+  buildings = [];
+  KeyArrayByBuilding = [];
 
   constructor(private fb: FormBuilder, public httpClient: HttpClient,
     public dialog: MatDialog, private modalService: NgbModal) {
@@ -102,9 +112,8 @@ export class AddComponent implements OnInit, AfterViewInit {
       allowSearchFilter: true
     };
 
-    this.dropdownDocTypeList = ['doc', 'pdf', 'jpg'];
     this.selectedDocTypeItems = ['doc'];
-    this.dropdownDocTypeSettings =   {
+    this.dropdownSettings =   {
       "singleSelection": true,
       "selectAllText": "Select All",
       "unSelectAllText": "UnSelect All",
@@ -118,9 +127,11 @@ export class AddComponent implements OnInit, AfterViewInit {
       key_room: ['', Validators.required],
       key_door: ['', Validators.required],
       special_key: false,
-      approver_array: [this.selectedApproverItems],
+      approver_array: [this.selectedKeyItems],
       upload_type: [this.selectedDocTypeItems]
     }, {});
+
+    this.buildings = this.KeyArray;
   }
 
   ngAfterViewInit(): void {
@@ -130,13 +141,6 @@ export class AddComponent implements OnInit, AfterViewInit {
 
   get f() {
     return this.keyForm.controls;
-  }
-
-  // Angular Material Datatable
-  public doFilter = (value: string) => {
-    if(value.length < 3 && value.length != 0)
-      return;
-    this.dataSource.filter = value.trim().toLocaleLowerCase();
   }
 
   // Multi Select
@@ -160,89 +164,6 @@ export class AddComponent implements OnInit, AfterViewInit {
       }
   }
 
-  checkSpecialKey(value)
-  {
-    this.isChecked = value.checked;
-  }
-
-  goAddKey()
-  {
-    this.isAdd = true;
-    this.isEdit = false;
-    this.isDelete = false;
-    this.selectedApproverItems = [];
-    this.selectedDocTypeItems = [];
-  }
-
-  addkey()
-  {
-    this.isSubmit = true;
-    if (this.keyForm.valid)
-    {
-      this.isAdd = false;
-      this.isEdit = false;
-      this.isDelete = false;
-
-      let now = moment().format("YYYY-MM-DD HH:mm:ss");
-
-      for(let i = 0; i < this.selectedApproverItems.length; i++)
-      {
-        this.selectedApproverItems[i].approver = this.user;
-        this.selectedApproverItems[i].date = now;
-      }
-
-      let new_key = {id: this.KeyArray.length + 1, name: this.keyForm.value.key_name, building: this.keyForm.value.key_building, room: this.keyForm.value.key_room,
-                      door: this.keyForm.value.key_door, isSpecial: this.keyForm.value.special_key, approver_array: this.selectedApproverItems, upload_type: this.selectedDocTypeItems, 
-                      createdDate: now, approver: this.user};
-      this.KeyArray.push(new_key);
-
-      this.dataSource.data = this.KeyArray as unknown as Key[];
-      setTimeout(() =>  {
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-      });
-      this.keyFormInitial();
-    }
-    else return;
-  }
-
-  keypressKeyName()
-  {
-    this.isNeededWhenUpdate = false;
-  }
-
-  updateKey()
-  {
-    this.isSubmit = true;
-    if (this.keyForm.valid)
-    {
-      let index = this.getIndexUpdatedItem(this.selectedKeyId);
-
-      if (this.KeyArray[index].name == this.keyForm.value.key_name)
-      {
-        this.isNeededWhenUpdate = true;
-        return;
-      }
-      else
-      {
-        this.isAdd = false;
-        this.isEdit = false;
-        this.isDelete = false;
-        if(index >= 0)
-        {
-          this.KeyArray[index].name = this.keyForm.value.key_name;
-          this.KeyArray[index].building = this.keyForm.value.key_building;
-          this.KeyArray[index].room = this.keyForm.value.key_room;
-          this.KeyArray[index].door = this.keyForm.value.key_door;
-          this.KeyArray[index].isSpecial = this.keyForm.value.special_key;
-          this.KeyArray[index].approver_array = this.selectedApproverItems;
-          this.KeyArray[index].upload_type = this.selectedDocTypeItems;
-        }
-      }
-    }
-    else return;
-  }
-
   getIndexUpdatedItem(id)
   {
     let updateItem = this.KeyArray.find(this.findIndexToUpdate, id);
@@ -254,32 +175,7 @@ export class AddComponent implements OnInit, AfterViewInit {
     return newItem.id === this;
   }
 
-  goback()
-  {
-    this.isAdd = false;
-    this.isEdit = false;
-    this.isDelete = false;
-    this.isChecked = false;
-    this.keyFormInitial();
-  }
 
-  editKey(value)
-  {
-    this.isEdit = true;
-    this.isAdd = false;
-    this.isDelete = false;
-    this.selectedKeyId = value.id;
-    this.keyForm.controls['key_name'].setValue(value.name);
-    this.keyForm.controls['key_building'].setValue(value.building);
-    this.keyForm.controls['key_room'].setValue(value.room);
-    this.keyForm.controls['key_door'].setValue(value.door);
-    this.keyForm.controls['special_key'].setValue(value.isSpecial);
-    this.isChecked = value.isSpecial;
-    this.selectedApproverItems = value.approver_array;
-    this.selectedDocTypeItems = value.upload_type;
-    this.keyForm.controls['approver_array'].setValue(this.selectedApproverItems);
-    this.keyForm.controls['upload_type'].setValue(this.selectedDocTypeItems);
-  }
 
   keyFormInitial()
   {
@@ -331,5 +227,51 @@ export class AddComponent implements OnInit, AfterViewInit {
             this.keyFormInitial();
           }
         }, (reason) => {});
+  }
+
+  loadBuild(id)
+  {
+    let index = this.getIndexUpdatedItem(id);
+    if ( index >= 0)
+    {
+      let key_building = this.KeyArray[index].building;
+      let tmp = [];
+      for(let i = 0; i < this.KeyArray.length; i++)
+      {
+        if (this.KeyArray[i].building == key_building)
+        {
+          tmp.push(this.KeyArray[i]);
+        }
+      }
+      this.KeyArrayByBuilding = tmp;
+
+      console.log(this.KeyArrayByBuilding);
+    }
+    else
+    {
+      return;
+    }
+  }
+
+  // Add
+  loadKeys(id)
+  {
+    let index = this.getIndexUpdatedItem(id);
+    if ( index >= 0)
+    {
+      this.selectedKeyId = id;
+      this.keyForm.controls['key_name'].setValue(this.KeyArray[index].name);
+      this.keyForm.controls['key_building'].setValue(this.KeyArray[index].building);
+      this.keyForm.controls['key_room'].setValue(this.KeyArray[index].room);
+      this.keyForm.controls['key_door'].setValue(this.KeyArray[index].door);
+      this.keyForm.controls['special_key'].setValue(this.KeyArray[index].isSpecial);
+      this.isChecked = this.KeyArray[index].isSpecial;
+      this.selectedApproverItems = this.KeyArray[index].approver_array;
+      this.selectedDocTypeItems = this.KeyArray[index].upload_type;
+    }
+    else
+    {
+      return;
+    }
   }
 }

@@ -1,0 +1,96 @@
+<div fxLayout="row wrap" fxFlexAlign="center" class="row">
+    <div fxFlex.gt-sm="50" fxFlex="100" class="p-10">
+      <mat-card style="height: 95vh">
+        <mat-card-content>
+          <mat-form-field [hideRequiredMarker]="true" [floatLabel]="'auto'" >
+              <mat-select [(ngModel)]="buildingModel" (ngModelChange)="loadBuild($event)">
+                <mat-option *ngFor="let item of buildings" [value]="item.id">{{item.building}}</mat-option>
+              </mat-select>
+              <mat-placeholder>
+                <mat-icon>streetview</mat-icon>
+                <b> Building</b>
+              </mat-placeholder>
+          </mat-form-field> 
+        </mat-card-content>   
+        <mat-card-content>
+          <div fxLayout="row wrap" fxFlexAlign="center" class="row" [hidden]="KeyArrayByBuilding.length == 0">
+            <div fxFlex.gt-sm="15" fxFlex.gt-xs="0" fxFlex="0" class="p-10" style="padding: 10px"></div>
+            <div fxFlex.gt-sm="85" fxFlex.gt-xs="100" fxFlex="100" class="p-10" style="padding: 10px">
+              <mat-form-field [hideRequiredMarker]="true" [floatLabel]="'auto'" >
+                <mat-select [(ngModel)]="keyModel" (ngModelChange)="loadKeys($event)">
+                  <mat-option *ngFor="let item of KeyArrayByBuilding" [value]="item.id">{{item.name}}</mat-option>
+                </mat-select>
+                <mat-placeholder>
+                  <mat-icon>vpn_key</mat-icon>
+                  <b> Key</b>
+                </mat-placeholder>
+              </mat-form-field> 
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div fxFlex.gt-sm="50" fxFlex="100" class="p-10">
+        <mat-card style="height: 95vh">
+            <mat-card-content *ngIf="keyModel != -1">
+                <form [formGroup]="keyForm" style="padding: 20px">
+                  <div fxLayout="row wrap" fxFlexAlign="center">
+                    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="p-10">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Key Name</mat-label>
+                        <input matInput formControlName="key_name"  placeholder="Key Name" (keypress)="keypressKeyName()" readonly>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="p-10">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Key Building</mat-label>
+                        <input matInput formControlName="key_building"  placeholder="Key Building" readonly>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="p-10">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Key Room</mat-label>
+                        <input matInput formControlName="key_room"  placeholder="Key Room" readonly>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="p-10">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Key Door</mat-label>
+                        <input matInput formControlName="key_door"  placeholder="Key Door" readonly>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="p-10">
+                      <!-- <p *ngIf="selectedApproverItems.length > 0">Special number: {{selectedApproverItems.length}}</p> -->
+                      <mat-checkbox color="accent" formControlName="special_key" [checked]="special_key" labelPosition="before" class="m-r-10">Special key</mat-checkbox>
+                    </div>
+                    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="p-10" style="padding: 10px" [hidden]="!isChecked">
+                      <div *ngFor="let item of selectedApproverItems">
+                        <p style="font-size: 14px"><img [src]="item.item_images" style="width: 50px;height: 50ox;border-radius: 50%"> &nbsp;&nbsp; {{item.item_text}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </mat-card-content>
+        </mat-card>
+      </div>
+  </div>
+  
+  <ng-template #deleteModal let-modal>
+      <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">{{ modal_title }}</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+          <p>{{ modal_content }}</p>
+      </div>
+      <div class="modal-footer">
+          <button type="button" id="closebutton" #closeModal_view
+              class="btn btn-outline-primary btn-rounded" (click)="modal.close('ok')">{{ modal_success_btn }}
+          </button>
+          <button type="button" id="closebutton" #closeModal_view class="btn btn-outline-dark btn-rounded" (click)="modal.dismiss('cancel')">
+              {{ modal_cancel_btn }}
+          </button>
+      </div>
+  </ng-template>

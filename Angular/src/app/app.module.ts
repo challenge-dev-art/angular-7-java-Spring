@@ -13,15 +13,19 @@ import { CookieService } from 'ngx-cookie-service';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { AdminComponent } from './admin/admin.component';
+import { UserBasicComponent } from './user-basic/user-basic.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddComponent,
     AdminComponent,
+    UserBasicComponent,
   ],
   imports: [
+    NgxDatatableModule,
     NgbModule,
     BrowserModule,
     BrowserAnimationsModule,

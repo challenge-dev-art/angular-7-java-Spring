@@ -8,5 +8,6 @@ export interface Key
     isSpecial: boolean,
     approver_array: Array<any>,
     upload_type: Array<any>,
-    createdDate: string
+    createdDate: string,
+    approver: string
 }
