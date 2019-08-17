@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClientXsrfModule } from '@angular/common/http';
 import { MaterialModule } from './material-module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -16,6 +16,8 @@ import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { AdminComponent } from './admin/admin.component';
 import { UserBasicComponent } from './user-basic/user-basic.component';
+import { JwtInterceptor } from './_service/jwt.interceptor';
+import { HttpXsrfInterceptor } from './_service/csrf.interceptor';
 
 @NgModule({
   declarations: [
@@ -36,13 +38,21 @@ import { UserBasicComponent } from './user-basic/user-basic.component';
     ReactiveFormsModule,
     NgxSpinnerModule,
     AppRoutingModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    HttpClientXsrfModule.withOptions({
+      cookieName: 'XSRF-TOKEN',
+      headerName: 'X-CSRF-TOKEN'
+    })
   ],
   entryComponents: [
 
   ],
   providers: [
     CookieService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpXsrfInterceptor, multi: true },
+    HttpClientModule
   ],
   bootstrap: [AppComponent]
 })

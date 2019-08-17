@@ -9,6 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import {NgxSpinnerService} from 'ngx-spinner';
 import { Key } from '../models/key.model';
+import { KeyService } from '../_service/key.service';
 
 
 @Component({
@@ -72,7 +73,7 @@ export class AddComponent implements OnInit, AfterViewInit {
   modal_cancel_btn = '';
 
   constructor(private fb: FormBuilder, public httpClient: HttpClient,
-    public dialog: MatDialog, private modalService: NgbModal) {
+    public dialog: MatDialog, private modalService: NgbModal, private keyService: KeyService) {
       
     }
 
@@ -80,6 +81,25 @@ export class AddComponent implements OnInit, AfterViewInit {
     this.dataSource.data = this.KeyArray as Key[];
     this.dataSource.sort = this.sort;
     // setTimeout(() => this.dataSource.paginator = this.paginator);
+
+    this.keyService.getApprovers().subscribe(res=>{
+      if(res != null)
+      {
+        for(let i = 0; i < res.length; i++)
+        {
+          this.keyService.getResponsiblesByKey(res[i].id).subscribe(res=>{
+            console.log(res);
+          });
+        }
+      }
+    });
+
+    this.keyService.getAllApproval().subscribe(res=>{
+      if (res != null)
+      {
+        console.log(res);
+      }
+    });
 
     this.dropdownApproverList = [
       { item_id: 1, item_text: 'Mumbai', item_images: 'assets/images/users/1.jpg', approver: '', date: '' },

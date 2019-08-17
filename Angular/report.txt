@@ -1,0 +1,6 @@
+﻿// Currectly they are not working.
+
+getAllApprovalsByCurrentUserAsApplier
+http://51.15.192.122:8889/api/keys/applier
+
+
