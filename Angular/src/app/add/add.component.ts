@@ -87,9 +87,7 @@ export class AddComponent implements OnInit, AfterViewInit {
       {
         for(let i = 0; i < res.length; i++)
         {
-          this.keyService.getResponsiblesByKey(res[i].id).subscribe(res=>{
-            console.log(res);
-          });
+         
         }
       }
     });

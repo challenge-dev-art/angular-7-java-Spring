@@ -1,0 +1,976 @@
+{
+	"name": "KeyManagement",
+	"item": [
+				{
+					"name": "getApprovers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer "
+							}
+						],
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/approvers",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"approvers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getKeysByPlace",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQRXl6YTJYZFZhIiwiZ3JvdXBzIjoiUEV5emEyWGRWYSIsImV4cGlyYXRpb24iOjE1NjE0NTIyNDE4MTB9.F1sNtJz4ZWj6cBMzZPVN2C0UDhmZdmKIeMNHjbQbFfzkLNo0ZBfuAshphKwmqhhUhLvGegg5BLX2zFwxAXahQQ"
+							}
+						],
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/mYWOmQOD1p",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"mYWOmQOD1p"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllApprovals",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "PEyza2XdVa"
+							}
+						],
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/all",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getApprovalsOfCurrentUser",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "K2p41Vmq"
+							}
+						],
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/me",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllApprovalsByCurrentUserAsApplier",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "PEyza2XdVa"
+							}
+						],
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/applier",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"applier"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllApprovalsByApplier",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "PEyza2XdVa"
+							}
+						],
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/applier/PEyza2XdVa",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"applier",
+								"PEyza2XdVa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getActiveKeyApprovals",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer "
+							}
+						],
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/active",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "submitApproval",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQRXl6YTJYZFZhIiwiZ3JvdXBzIjoiUEV5emEyWGRWYSIsImV4cGlyYXRpb24iOjE1MzkzNDkxNTY4NTR9.mMUYWYuf3hC_EgYJ3artXllKu7q_Pxs4ILXynNgu1AIO_31_UPbdetedaUHds-V6lXvEkkJjmmLlou5F0GMGPg"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"keyId\": \"mK59QG723X\",\r\n\t\"approverId\": \"925XAGvDkx\",\r\n\t\"otherExporter\": false,\r\n\t\"from\": \"2018-10-01 8:00\",\r\n\t\"untilRevocation\": true,\r\n\t\"to\": \"2018-10-01 12:00\",\r\n\t\"reason\": \"kell.\"\r\n}"
+						},
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/submitApproval",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"submitApproval"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "approveKeyApproval",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "925XAGvDkx"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/approve/mK59QG723X",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"approve",
+								"mK59QG723X"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "declineKeyApproval",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "zQpKZODB"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"reason\": \"nem\"\n}"
+						},
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/decline/K2p41Vmq",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"decline",
+								"K2p41Vmq"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "revokeKeyApproval",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5MjVYQUd2RGt4IiwiZ3JvdXBzIjoiazNwWVBOem13cSIsImV4cGlyYXRpb24iOjE1MzYyNzE3NzU3MDV9.BPHc09kkSb1uTDYjtmHO70iuargQyTX8EhtY0zbX47U-sBwK7qUqoRweD7G0G1h3MIyncbCEVDkTUdFb5bWX1w"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"approvalId\": \"mK59QG723X\",\n\t\"approvalTo\": \"2018-10-10 10:00\",\n\t\"revokeReason\": \"addvissza\"\n}"
+						},
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/revoke",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"revoke"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getResponsiblesByKey",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer"
+							}
+						],
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/responsibles/mK59QG723X",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"responsibles",
+								"mK59QG723X"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createKey",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE0NTI0MTk0OTd9.WE-9bY8nepWCXfXut2s1Gw2U0ReAW4Vzn4TC8KRMOFf0sQoxUO8ARlhKMiAUrpA_M1-Lmt-5VldBftBmtrJVgQ"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"placeId\": \"xoDjW8OYVl\",\r\n\t\"responsibleIds\": [\r\n\t\t\"925XAGvDkx\"\r\n\t],\r\n\t\"hungarianName\": \"createdHun\",\r\n\t\"englishName\": \"createdEng\",\r\n\t\"critic\": false,\r\n\t\"quantity\": 10,\r\n\t\"secondaryApproverIds\": [\r\n\t\t\"yVNXD5YkW8\",\r\n\t\t\"RkNzrEvOa0\"\r\n\t]\r\n}"
+						},
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/add",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateKey",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE0NTI0MTk0OTd9.WE-9bY8nepWCXfXut2s1Gw2U0ReAW4Vzn4TC8KRMOFf0sQoxUO8ARlhKMiAUrpA_M1-Lmt-5VldBftBmtrJVgQ"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"keyId\": \"mK59QG723X\",\r\n\t\"responsibleIds\": [\r\n\t\t\"925XAGvDkx\"\r\n\t],\r\n\t\"hungarianName\": \"createHunUpd\",\r\n\t\"englishName\": \"createEngUpd\",\r\n\t\"critic\": true,\r\n\t\"quantity\": 15,\r\n\t\"secondaryApproverIds\": [\r\n\t\t\"yVNXD5YkW8\",\r\n\t\t\"RkNzrEvOa0\"\r\n\t]\r\n}"
+						},
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/update",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteKey",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQRXl6YTJYZFZhIiwiZ3JvdXBzIjoiUEV5emEyWGRWYSIsImV4cGlyYXRpb24iOjE1MzQ5NDA3ODY5ODJ9.97cp9-q18fp3x1SM1aefbI426XVVVuUHRmwAjnGDyiJFUBrBxtM2BH3vnRZ3SabtSFxSBb3Rsh2-ZW79usm7yA"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/delete/gnDqVQ7y6r",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"delete",
+								"gnDqVQ7y6r"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "takeKeyByNonEmployee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE0ODE2NTk5Nzh9.HZVLxG0C-qgG0VtgRx9Tg1Sv5mfydvcuoQo8ny892NnTIo1I5Q6XrVes6d3h8VCI8foFnisAEV5R8DxGrgGS3w",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"keyId\": \"mK59QG723X\",\n\t\"tookByName\": \"Teszt Elek\",\n\t\"base64Signature\": \"base64Signature\"\n}"
+						},
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/takeKeyByNonEmployee",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"takeKeyByNonEmployee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "returnKeyByNonEmployee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE1NDA4MjA3OTh9.Pbh_AOxP6X3-bT0vBCuroyjwhnuDSrQLsWbLFJzTGfa48sMMa1YrRVsBni25h184xVGeCCfe1sk-_W9HmOisAg",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"takeAwayId\": \"mK59QG723X\",\n\t\"returnByName\": \"Teszt Tamas\",\n\t\"base64Signature\": \"base64Signature\"\n}"
+						},
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/returnKeyByNonEmployee",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"returnKeyByNonEmployee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getKeyTakeAwayByNonEmployeeById",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE0ODQ1NzI2NDJ9.szy4jolmssTd0KCoQwMCoLEQzoPYzRZ4zVFVYUXMexhEMai02gdP_ekOWJqyJCzYX-eF00V9_CZFuLaVjFJjDQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/getKeyTakeAwayByNonEmployeeById/mK59QG723X",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"getKeyTakeAwayByNonEmployeeById",
+								"mK59QG723X"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTakeAwaysByNonEmployeeByKeyId",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE0ODQ1NzI2NDJ9.szy4jolmssTd0KCoQwMCoLEQzoPYzRZ4zVFVYUXMexhEMai02gdP_ekOWJqyJCzYX-eF00V9_CZFuLaVjFJjDQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/getTakeAwaysByNonEmployeeByKeyId/mK59QG723X",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"getTakeAwaysByNonEmployeeByKeyId",
+								"mK59QG723X"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllKeysTakenByNonEmployee",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE0ODQ1NzI2NDJ9.szy4jolmssTd0KCoQwMCoLEQzoPYzRZ4zVFVYUXMexhEMai02gdP_ekOWJqyJCzYX-eF00V9_CZFuLaVjFJjDQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/getAllKeysTakenByNonEmployee",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"getAllKeysTakenByNonEmployee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllKeysTakenByNonEmployeeById",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE0ODQ1NzI2NDJ9.szy4jolmssTd0KCoQwMCoLEQzoPYzRZ4zVFVYUXMexhEMai02gdP_ekOWJqyJCzYX-eF00V9_CZFuLaVjFJjDQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/getAllKeysTakenByNonEmployeeById/mK59QG723X",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"getAllKeysTakenByNonEmployeeById",
+								"mK59QG723X"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "startKeyTakeAwayForEmployeeByGuard",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE1NTc2Nzc5Nzd9.XCGFCZ2eyCx1bqwTOi1D6yd1xqVLsjQIcou09EdvhuqVoWH54Tvu4rq08xKNOQ2QQOYtgMZybxDN1HZWAtmtEQ",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"keyId\": \"mK59QG723X\",\n\t\"tookById\": \"PEyza2XdVa\"\n}"
+						},
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/startKeyTakeAwayForEmployeeByGuard",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"startKeyTakeAwayForEmployeeByGuard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "startKeyTakeAwayForEmployeeByEmployee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE1NTc2Nzc5Nzd9.XCGFCZ2eyCx1bqwTOi1D6yd1xqVLsjQIcou09EdvhuqVoWH54Tvu4rq08xKNOQ2QQOYtgMZybxDN1HZWAtmtEQ",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"keyId\": \"mK59QG723X\"\n}"
+						},
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/startKeyTakeAwayForEmployeeByEmployee",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"startKeyTakeAwayForEmployeeByEmployee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "acceptKeyTakeAwayByGuard",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE1NTc2Nzc5Nzd9.XCGFCZ2eyCx1bqwTOi1D6yd1xqVLsjQIcou09EdvhuqVoWH54Tvu4rq08xKNOQ2QQOYtgMZybxDN1HZWAtmtEQ",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"takeAwayId\": \"mK59QG723X\",\n\t\"accepted\": true\n}"
+						},
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/acceptKeyTakeAwayByGuard",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"acceptKeyTakeAwayByGuard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "acceptKeyTakeAwayByEmployee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE1NTc2Nzc5Nzd9.XCGFCZ2eyCx1bqwTOi1D6yd1xqVLsjQIcou09EdvhuqVoWH54Tvu4rq08xKNOQ2QQOYtgMZybxDN1HZWAtmtEQ",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"takeAwayId\": \"mK59QG723X\",\n\t\"accepted\": true\n}"
+						},
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/acceptKeyTakeAwayByEmployee",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"acceptKeyTakeAwayByEmployee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signTakeAwayByEmployee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE1NTc2Nzc5Nzd9.XCGFCZ2eyCx1bqwTOi1D6yd1xqVLsjQIcou09EdvhuqVoWH54Tvu4rq08xKNOQ2QQOYtgMZybxDN1HZWAtmtEQ",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"takeAwayId\": \"mK59QG723X\",\n\t\"base64Signature\": \"base64Signature\"\n}"
+						},
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/signTakeAwayByEmployee",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"signTakeAwayByEmployee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "returnKeyByEmployee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE1NjIwMzA4OTh9.7zf8q9KTH-Qe07On6rPM1QPJ4w7-uy-oTfnBSR3yfIPK3e2h5WTU3-ZT8KxiWiezm5UHOhchmGEHaKaoqXwkzA",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"takeAwayId\": \"mK59QG723X\",\n\t\"returnedById\": \"PEyza2XdVa\",\n\t\"returnedByName\": null,\n\t\"base64Signature\": \"signature\"\n}"
+						},
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/returnKeyByEmployee",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"returnKeyByEmployee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getKeyTakeAwayByEmployeeById",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE0ODQ1NzI2NDJ9.szy4jolmssTd0KCoQwMCoLEQzoPYzRZ4zVFVYUXMexhEMai02gdP_ekOWJqyJCzYX-eF00V9_CZFuLaVjFJjDQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/getKeyTakeAwayByEmployeeById/mK59QG723X",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"getKeyTakeAwayByEmployeeById",
+								"mK59QG723X"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTakeAwaysByEmployeeByKeyId",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE0ODQ1NzI2NDJ9.szy4jolmssTd0KCoQwMCoLEQzoPYzRZ4zVFVYUXMexhEMai02gdP_ekOWJqyJCzYX-eF00V9_CZFuLaVjFJjDQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/getTakeAwaysByEmployeeByKeyId/mK59QG723X",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"getTakeAwaysByEmployeeByKeyId",
+								"mK59QG723X"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllKeysTakenByEmployee",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE0ODQ1NzI2NDJ9.szy4jolmssTd0KCoQwMCoLEQzoPYzRZ4zVFVYUXMexhEMai02gdP_ekOWJqyJCzYX-eF00V9_CZFuLaVjFJjDQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/getAllKeysTakenByEmployee",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"getAllKeysTakenByEmployee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllKeysTakenByEmployeeByKeyId",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3V0x2TkVZQjZnIiwiZ3JvdXBzIjoiNlpndlpCdnhFOSIsImV4cGlyYXRpb24iOjE1NjE0ODQ1NzI2NDJ9.szy4jolmssTd0KCoQwMCoLEQzoPYzRZ4zVFVYUXMexhEMai02gdP_ekOWJqyJCzYX-eF00V9_CZFuLaVjFJjDQ"
+							}
+						],
+						"url": {
+							"raw": "http://51.15.192.122:8889/api/keys/getAllKeysTakenByEmployeeByKeyId/mK59QG723X",
+							"protocol": "http",
+							"host": [
+								"51.15.192.122"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"keys",
+								"getAllKeysTakenByEmployeeByKeyId",
+								"mK59QG723X"
+							]
+						}
+					},
+					"response": []
+				}
+	]
+}
