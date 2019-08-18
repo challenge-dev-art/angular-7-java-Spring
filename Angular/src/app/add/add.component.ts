@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import {NgxSpinnerService} from 'ngx-spinner';
 import { Key } from '../models/key.model';
 import { KeyService } from '../_service/key.service';
+import { ValueTransformer } from '@angular/compiler/src/util';
 
 
 @Component({
@@ -37,22 +38,7 @@ export class AddComponent implements OnInit, AfterViewInit {
   // Fake User
   user = 'Yilong';
   userId = 100;
-  
-  KeyArray = [{id: 1, name: 'key 1', building: 'sanhaojie', room: '7-1',door: 3, isSpecial: true, 
-                      approver_array: [{item_id: 3, item_text: 'Pune', item_images: "assets/images/users/d1.jpg", approver: 'Lehel', date: '2019-08-14 19:18:32'}, 
-                                      {item_id: 4, item_text: "Navsari", item_images: "assets/images/users/d2.jpg", approver: 'Lehel', date: '2019-08-14 19:18:32'}],
-                      upload_type: ['pdf'], 
-                      createdDate: '2019-08-15 20:28:52', approver: 'Lehel'},
-              {id: 2, name: "ker 2", building: "bu 2", room: "r 3", door: "dw", isSpecial: true, 
-                      approver_array: [{item_id: 4, item_text: "Navsari", item_images: "assets/images/users/d2.jpg", approver: 'Adam', date: '2019-08-14 19:18:32'}], 
-                      upload_type: ['doc'], 
-                      createdDate: '2019-08-14 19:18:32', approver: 'Adam'},
-              {id: 3, name: "key 3", building: "building 2", room: "room 3", door: "dw", isSpecial: false, 
-                      approver_array: [{item_id: 4, item_text: "Navsari", item_images: "assets/images/users/d2.jpg", approver: 'Adam', date: '2019-08-14 19:18:32'}], 
-                      upload_type: ['doc'], 
-                      createdDate: '2019-08-14 19:18:32', approver: 'Yilong'}];
 
-  dropdownApproverList = [];
   selectedApproverItems = [];
   dropdownApproverSettings = {};
 
@@ -72,22 +58,54 @@ export class AddComponent implements OnInit, AfterViewInit {
   modal_success_btn = '';
   modal_cancel_btn = '';
 
+
+  Places = [];
+  Rooms = [];
+  Approvers = [];
+  placeId: any;
+  Keys = [];
+  updatingKey: any;
+
   constructor(private fb: FormBuilder, public httpClient: HttpClient,
     public dialog: MatDialog, private modalService: NgbModal, private keyService: KeyService) {
       
     }
 
   ngOnInit(): void {
-    this.dataSource.data = this.KeyArray as Key[];
-    this.dataSource.sort = this.sort;
-    // setTimeout(() => this.dataSource.paginator = this.paginator);
+    
+    this.keyService.getPlaces().subscribe(res=>{
+      if(res != null)
+      {
+        this.Places = res;
+        for(let p = 0; p < res.length; p++)
+        {
+          this.Keys = [];
+          this.keyService.getKeysByPlace(res[p].id).subscribe(res=>{
+            if (res != null)
+            {
+              for( let k =0; k < res.length; k++)
+              {
+                this.Keys.push(res[k]);
+              }
+              this.dataSource.data = this.Keys as Key[];
+              this.dataSource.sort = this.sort;
+              // setTimeout(() => this.dataSource.paginator = this.paginator);
+            }
+          });
+        }
+        
+      }
+    });
 
+    // get Approvers
     this.keyService.getApprovers().subscribe(res=>{
       if(res != null)
       {
-        for(let i = 0; i < res.length; i++)
+        this.Approvers = [];
+        for( let i = 0; i< res.length; i++)
         {
-         
+          let item_approver = {item_id: res[i].id, item_text: res[i].name};
+          this.Approvers.push(item_approver);
         }
       }
     });
@@ -95,21 +113,10 @@ export class AddComponent implements OnInit, AfterViewInit {
     this.keyService.getAllApproval().subscribe(res=>{
       if (res != null)
       {
-        console.log(res);
+        
       }
     });
-
-    this.dropdownApproverList = [
-      { item_id: 1, item_text: 'Mumbai', item_images: 'assets/images/users/1.jpg', approver: '', date: '' },
-      { item_id: 2, item_text: 'Bangaluru', item_images: 'assets/images/users/2.jpg', approver: '', date: '' },
-      { item_id: 3, item_text: 'Pune', item_images: 'assets/images/users/3.jpg', approver: '', date: '' },
-      { item_id: 4, item_text: 'Navsari', item_images: 'assets/images/users/4.jpg', approver: '', date: '' },
-      { item_id: 5, item_text: 'New Delhi', item_images: 'assets/images/users/5.jpg', approver: '', date: '' }
-    ];
-    this.selectedApproverItems = [
-      { item_id: 3, item_text: 'Pune', item_images: 'assets/images/users/d1.jpg', approver: 'Yilong', date: '2019-08-14 19:18:32' },
-      { item_id: 4, item_text: 'Navsari', item_images: 'assets/images/users/d2.jpg', approver: 'Yilong', date: '2019-08-13 19:18:32' }
-    ];
+    this.selectedApproverItems = [];
     this.dropdownApproverSettings = {
       singleSelection: false,
       idField: 'item_id',
@@ -131,10 +138,11 @@ export class AddComponent implements OnInit, AfterViewInit {
     }
 
     this.keyForm = this.fb.group({
-      key_name: ['', Validators.required],
+      key_englishName: ['', Validators.required],
+      key_hungarianName: ['', Validators.required],
       key_building: ['', Validators.required],
-      key_room: ['', Validators.required],
-      key_door: ['', Validators.required],
+      key_room: '',
+      key_quality: [0, Validators.required],
       special_key: false,
       approver_array: [this.selectedApproverItems],
       upload_type: [this.selectedDocTypeItems]
@@ -159,10 +167,10 @@ export class AddComponent implements OnInit, AfterViewInit {
 
   // Multi Select
   onItemSelect(item: any) {
-  //  console.log(item);
+    this.selectedApproverItems.push(item);
   }
   onSelectAll(items: any) {
-  //  console.log(items);
+    this.selectedApproverItems = this.Approvers;
   }
 
   toogleShowFilter() {
@@ -203,21 +211,41 @@ export class AddComponent implements OnInit, AfterViewInit {
 
       let now = moment().format("YYYY-MM-DD HH:mm:ss");
 
-      for(let i = 0; i < this.selectedApproverItems.length; i++)
+      let responsibleIds = [];
+      let index = this.getIndexResponsibles(this.keyForm.value.key_room);
+      if(index >= 0)
       {
-        this.selectedApproverItems[i].approver = this.user;
-        this.selectedApproverItems[i].date = now;
+        for(let i = 0; i < this.Rooms[index].responsibles.length; i++)
+        {
+          responsibleIds.push(this.Rooms[index].responsibles[i].id);
+        }
       }
 
-      let new_key = {id: this.KeyArray.length + 1, name: this.keyForm.value.key_name, building: this.keyForm.value.key_building, room: this.keyForm.value.key_room,
-                      door: this.keyForm.value.key_door, isSpecial: this.keyForm.value.special_key, approver_array: this.selectedApproverItems, upload_type: this.selectedDocTypeItems, 
-                      createdDate: now, approver: this.user};
-      this.KeyArray.push(new_key);
+      let secondaryApproverIds = [];
+      let selectedApprovers = this.keyForm.value.approver_array;
+      for(let a = 0; a < selectedApprovers.length; a++)
+      {
+        secondaryApproverIds.push(selectedApprovers[a].item_id);
+      }
 
-      this.dataSource.data = this.KeyArray as unknown as Key[];
-      setTimeout(() =>  {
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
+      let item_key = {
+        placeId: this.keyForm.value.key_building,
+        responsibleIds: responsibleIds,
+        hungarianName: this.keyForm.value.key_hungarianName,
+        englishName: this.keyForm.value.key_englishName,
+        critic: this.keyForm.value.special_key,
+        quantity: parseInt(this.keyForm.value.key_quality),
+        secondaryApproverIds: secondaryApproverIds
+      }
+
+      this.keyService.createKey(item_key).subscribe(res=>{
+        this.Keys.reverse().push(item_key);
+        this.Keys.reverse();
+        this.dataSource.data = this.Keys as Key[];
+        setTimeout(() =>  {
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+        });
       });
       this.keyFormInitial();
     }
@@ -236,7 +264,7 @@ export class AddComponent implements OnInit, AfterViewInit {
     {
       let index = this.getIndexUpdatedItem(this.selectedKeyId);
 
-      if (this.KeyArray[index].name == this.keyForm.value.key_name)
+      if (this.Keys[index].englishName == this.keyForm.value.key_englishName)
       {
         this.isNeededWhenUpdate = true;
         return;
@@ -246,16 +274,55 @@ export class AddComponent implements OnInit, AfterViewInit {
         this.isAdd = false;
         this.isEdit = false;
         this.isDelete = false;
-        if(index >= 0)
+
+        let responsibleIds = [];
+
+        let index_room = this.getIndexResponsibles(this.keyForm.value.key_room);
+        if(index_room >= 0)
         {
-          this.KeyArray[index].name = this.keyForm.value.key_name;
-          this.KeyArray[index].building = this.keyForm.value.key_building;
-          this.KeyArray[index].room = this.keyForm.value.key_room;
-          this.KeyArray[index].door = this.keyForm.value.key_door;
-          this.KeyArray[index].isSpecial = this.keyForm.value.special_key;
-          this.KeyArray[index].approver_array = this.selectedApproverItems;
-          this.KeyArray[index].upload_type = this.selectedDocTypeItems;
+          for(let i = 0; i < this.Rooms[index_room].responsibles.length; i++)
+          {
+            responsibleIds.push(this.Rooms[index_room].responsibles[i].id);
+          }
         }
+
+        let secondaryApproverIds = [];
+        let selectedApprovers = this.keyForm.value.approver_array;
+        for(let a = 0; a < selectedApprovers.length; a++)
+        {
+          secondaryApproverIds.push(selectedApprovers[a].item_id);
+        }
+
+        let item_key = {
+          keyId: this.updatingKey,
+          placeId: this.keyForm.value.key_building,
+          responsibleIds: responsibleIds,
+          hungarianName: this.keyForm.value.key_hungarianName,
+          englishName: this.keyForm.value.key_englishName,
+          critic: this.keyForm.value.special_key,
+          quantity: parseInt(this.keyForm.value.key_quality),
+          secondaryApproverIds: secondaryApproverIds
+        }
+
+        this.keyService.updateKey(item_key).subscribe(res=>{
+          if(index >= 0)
+          {
+            this.Keys[index].englishName = this.keyForm.value.key_englishName;
+            this.Keys[index].hungarianName = this.keyForm.value.key_hungarianName;
+            this.Keys[index].placeId = this.keyForm.value.key_building;
+            this.Keys[index].responsibleIds =  responsibleIds;
+            this.Keys[index].hungarianName = this.keyForm.value.key_hungarianName;
+            this.Keys[index].englishName = this.keyForm.value.key_englishName;
+            this.Keys[index].critic = this.keyForm.value.special_key;
+            this.Keys[index].quantity = parseInt(this.keyForm.value.key_quality);
+            this.Keys[index].secondaryApproverIds = secondaryApproverIds;
+            this.dataSource.data = this.Keys as Key[];
+            setTimeout(() =>  {
+              this.dataSource.sort = this.sort;
+              this.dataSource.paginator = this.paginator;
+            });
+          }
+        });
       }
     }
     else return;
@@ -263,13 +330,20 @@ export class AddComponent implements OnInit, AfterViewInit {
 
   getIndexUpdatedItem(id)
   {
-    let updateItem = this.KeyArray.find(this.findIndexToUpdate, id);
-    let index = this.KeyArray.indexOf(updateItem);
+    let updateItem = this.Keys.find(this.findIndexToUpdate, id);
+    let index = this.Keys.indexOf(updateItem);
     return index;
   }
 
   findIndexToUpdate(newItem) { 
     return newItem.id === this;
+  }
+
+  getIndexResponsibles(id)
+  {
+    let item = this.Rooms.find(this.findIndexToUpdate, id);
+    let index = this.Rooms.indexOf(item);
+    return index;
   }
 
   goback()
@@ -283,18 +357,24 @@ export class AddComponent implements OnInit, AfterViewInit {
 
   editKey(value)
   {
+    this.updatingKey = value.id;
     this.isEdit = true;
     this.isAdd = false;
     this.isDelete = false;
     this.selectedKeyId = value.id;
-    this.keyForm.controls['key_name'].setValue(value.name);
-    this.keyForm.controls['key_building'].setValue(value.building);
-    this.keyForm.controls['key_room'].setValue(value.room);
-    this.keyForm.controls['key_door'].setValue(value.door);
-    this.keyForm.controls['special_key'].setValue(value.isSpecial);
-    this.isChecked = value.isSpecial;
-    this.selectedApproverItems = value.approver_array;
-    this.selectedDocTypeItems = value.upload_type;
+    this.keyForm.controls['key_englishName'].setValue(value.englishName);
+    this.keyForm.controls['key_hungarianName'].setValue(value.hungarianName);
+    this.keyForm.controls['key_building'].setValue(value.place.id);
+    // this.keyForm.controls['key_room'].setValue(value.room);
+    this.keyForm.controls['key_quality'].setValue(parseInt(value.quantity));
+    this.keyForm.controls['special_key'].setValue(value.critic);
+    this.isChecked = value.critic;
+    this.selectedApproverItems = [];
+    for (let i = 0; i < value.secondaryApprovers.length; i++)
+    {
+      let item = {item_id: value.secondaryApprovers[i].id, item_text: value.secondaryApprovers[i].lastName + ' ' + value.secondaryApprovers[i].firstName };
+      this.selectedApproverItems.push(item);
+    }
     this.keyForm.controls['approver_array'].setValue(this.selectedApproverItems);
     this.keyForm.controls['upload_type'].setValue(this.selectedDocTypeItems);
   }
@@ -304,15 +384,6 @@ export class AddComponent implements OnInit, AfterViewInit {
     this.isSubmit = false;
     this.isDelete = false;
     this.isNeededWhenUpdate = false;
-    this.keyForm.controls.key_name.setValue('');
-    this.keyForm.controls.key_building.setValue('');
-    this.keyForm.controls.key_room.setValue('');
-    this.keyForm.controls.key_door.setValue('');
-    this.keyForm.controls.special_key.setValue(false);
-    this.selectedApproverItems = [];
-    this.selectedDocTypeItems = [];
-    this.keyForm.controls.approver_array.setValue(this.selectedApproverItems);
-    this.keyForm.controls.upload_type.setValue(this.selectedDocTypeItems);
   }
 
   openDeleteModal(value, content)
@@ -324,10 +395,10 @@ export class AddComponent implements OnInit, AfterViewInit {
 
     this.isDelete = true;
     this.selectedKeyId = value.id;
-    this.keyForm.controls['key_name'].setValue(value.name);
+    this.keyForm.controls['key_englishName'].setValue(value.englishName);
     this.keyForm.controls['key_building'].setValue(value.building);
     this.keyForm.controls['key_room'].setValue(value.room);
-    this.keyForm.controls['key_door'].setValue(value.door);
+    this.keyForm.controls['key_quality'].setValue(value.quality);
     this.keyForm.controls['special_key'].setValue(value.isSpecial);
     this.isChecked = value.isSpecial;
     this.selectedApproverItems = value.approver_array;
@@ -338,16 +409,34 @@ export class AddComponent implements OnInit, AfterViewInit {
     let dId = value.id;
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'sm'})
         .result.then((result) => {
+          this.keyService.deleteKey(dId, {}).subscribe(res=>{
+            console.log(res);
+          });
           let index = this.getIndexUpdatedItem(dId);
           if(index >= 0)
           {
-            this.KeyArray.splice(index, 1);
-            this.dataSource.data = this.KeyArray as Key[];
+            this.Keys.splice(index, 1);
+            this.dataSource.data = this.Keys as Key[];
             this.isAdd = false;
             this.isEdit = false;
             this.isDelete = false;
             this.keyFormInitial();
           }
         }, (reason) => {});
+  }
+
+  loadPlaces(buildingId)
+  {
+    if ( buildingId != null && buildingId != undefined)
+      this.placeId = buildingId;
+    if (this.placeId != undefined )
+    {
+      this.keyService.getRoomsByPlace(buildingId).subscribe(res=>{
+        if(res != null)
+        {
+          this.Rooms = res;
+        }
+      });
+    }
   }
 }

@@ -36,24 +36,7 @@ export class UserBasicComponent implements OnInit, AfterViewInit {
   user = 'Yilong';
   userId = 100;
   
-  KeyArray = [{id: 1, name: 'key 1', building: 'sanhaojie', room: '7-1',door: 3, isSpecial: true, 
-                      approver_array: [{item_id: 3, item_text: 'Pune', item_images: "assets/images/users/d1.jpg", approver: 'Lehel', date: '2019-08-14 19:18:32'}, 
-                                      {item_id: 4, item_text: "Navsari", item_images: "assets/images/users/d2.jpg", approver: 'Lehel', date: '2019-08-14 19:18:32'}],
-                      upload_type: ['pdf'], 
-                      createdDate: '2019-08-15 20:28:52', approver: 'Lehel'},
-              {id: 2, name: "ker 2", building: "bu 2", room: "r 3", door: "dw", isSpecial: true, 
-                      approver_array: [{item_id: 4, item_text: "Navsari", item_images: "assets/images/users/d2.jpg", approver: 'Adam', date: '2019-08-14 19:18:32'}], 
-                      upload_type: ['doc'], 
-                      createdDate: '2019-08-14 19:18:32', approver: 'Adam'},
-              {id: 3, name: "key 3", building: "building 2", room: "room 3", door: "dw", isSpecial: false, 
-                      approver_array: [{item_id: 4, item_text: "Navsari", item_images: "assets/images/users/d2.jpg", approver: 'Adam', date: '2019-08-14 19:18:32'}], 
-                      upload_type: ['doc'], 
-                      createdDate: '2019-08-14 19:18:32', approver: 'Yilong'},
-              {id: 4, name: 'Special key', building: 'sanhaojie', room: '7-1',door: 3, isSpecial: true, 
-                      approver_array: [{item_id: 3, item_text: 'Pune', item_images: "assets/images/users/d1.jpg", approver: 'Lehel', date: '2019-08-14 19:18:32'}, 
-                                      {item_id: 4, item_text: "Navsari", item_images: "assets/images/users/d2.jpg", approver: 'Lehel', date: '2019-08-14 19:18:32'}],
-                      upload_type: ['jpg'], 
-                      createdDate: '2019-08-15 20:28:52', approver: 'Yilong'},];
+  KeyArray = [];
 
   dropdownApproverList = [];
   selectedApproverItems = [];
@@ -125,7 +108,7 @@ export class UserBasicComponent implements OnInit, AfterViewInit {
       key_name: ['', Validators.required],
       key_building: ['', Validators.required],
       key_room: ['', Validators.required],
-      key_door: ['', Validators.required],
+      key_quality: ['', Validators.required],
       special_key: false,
       approver_array: [this.selectedKeyItems],
       upload_type: [this.selectedDocTypeItems]
@@ -185,7 +168,7 @@ export class UserBasicComponent implements OnInit, AfterViewInit {
     this.keyForm.controls.key_name.setValue('');
     this.keyForm.controls.key_building.setValue('');
     this.keyForm.controls.key_room.setValue('');
-    this.keyForm.controls.key_door.setValue('');
+    this.keyForm.controls.key_quality.setValue('');
     this.keyForm.controls.special_key.setValue(false);
     this.selectedApproverItems = [];
     this.selectedDocTypeItems = [];
@@ -205,7 +188,7 @@ export class UserBasicComponent implements OnInit, AfterViewInit {
     this.keyForm.controls['key_name'].setValue(value.name);
     this.keyForm.controls['key_building'].setValue(value.building);
     this.keyForm.controls['key_room'].setValue(value.room);
-    this.keyForm.controls['key_door'].setValue(value.door);
+    this.keyForm.controls['key_quality'].setValue(value.quality);
     this.keyForm.controls['special_key'].setValue(value.isSpecial);
     this.isChecked = value.isSpecial;
     this.selectedApproverItems = value.approver_array;
@@ -260,10 +243,10 @@ export class UserBasicComponent implements OnInit, AfterViewInit {
     if ( index >= 0)
     {
       this.selectedKeyId = id;
-      this.keyForm.controls['key_name'].setValue(this.KeyArray[index].name);
+      this.keyForm.controls['key_name'].setValue(this.KeyArray[index].englishName);
       this.keyForm.controls['key_building'].setValue(this.KeyArray[index].building);
       this.keyForm.controls['key_room'].setValue(this.KeyArray[index].room);
-      this.keyForm.controls['key_door'].setValue(this.KeyArray[index].door);
+      this.keyForm.controls['key_quality'].setValue(this.KeyArray[index].quality);
       this.keyForm.controls['special_key'].setValue(this.KeyArray[index].isSpecial);
       this.isChecked = this.KeyArray[index].isSpecial;
       this.selectedApproverItems = this.KeyArray[index].approver_array;

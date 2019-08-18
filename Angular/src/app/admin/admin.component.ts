@@ -26,19 +26,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
 
   userType = '1';
   
-  KeyArray = [{id: 1, name: 'key 1', building: 'sanhaojie', room: '7-1',door: 3, isSpecial: true, 
-                      approver_array: [{item_id: 3, item_text: 'Pune', item_images: "assets/images/users/d1.jpg", approver: 'Lehel', date: '2019-08-14 19:18:32'}, 
-                                      {item_id: 4, item_text: "Navsari", item_images: "assets/images/users/d2.jpg", approver: 'Lehel', date: '2019-08-14 19:18:32'}],
-                      upload_type: ['pdf'], 
-                      createdDate: '2019-08-15 20:28:52', approver: 'Lehel'},
-              {id: 2, name: "ker 2", building: "bu 2", room: "r 3", door: "dw", isSpecial: true, 
-                      approver_array: [{item_id: 4, item_text: "Navsari", item_images: "assets/images/users/d2.jpg", approver: 'Adam', date: '2019-08-14 19:18:32'}], 
-                      upload_type: ['doc'], 
-                      createdDate: '2019-08-14 19:18:32', approver: 'Adam'},
-              {id: 3, name: "key 3", building: "building 2", room: "room 3", door: "dw", isSpecial: false, 
-                      approver_array: [{item_id: 4, item_text: "Navsari", item_images: "assets/images/users/d2.jpg", approver: 'Adam', date: '2019-08-14 19:18:32'}], 
-                      upload_type: ['doc'], 
-                      createdDate: '2019-08-14 19:18:32', approver: 'Yilong'}];
+  KeyArray = [];
 
   dropdownApproverList = [];
   selectedApproverItems = [];
